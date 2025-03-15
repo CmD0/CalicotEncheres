@@ -106,7 +106,7 @@ resource "azurerm_monitor_autoscale_setting" "app-calicot-dev-scaling-4" {
     }
     rule {
       metric_trigger {
-        metric_name        = "Percentage CPU"
+        metric_name        = "CpuPercentage"
         metric_resource_id = azurerm_app_service_plan.plan-calicot-dev-4.id
         time_grain         = "PT1M"
         statistic          = "Average"
@@ -126,7 +126,7 @@ resource "azurerm_monitor_autoscale_setting" "app-calicot-dev-scaling-4" {
 
     rule {
       metric_trigger {
-        metric_name        = "Percentage CPU"
+        metric_name        = "CpuPercentage"
         metric_resource_id = azurerm_app_service_plan.plan-calicot-dev-4.id
         time_grain         = "PT1M"
         statistic          = "Average"
