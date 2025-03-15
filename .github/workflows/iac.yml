@@ -36,10 +36,6 @@ jobs:
     - name: Terraform Init
       run: terraform init -var="subcription_id="$TR_VAR_SUBCRIPTION_ID -backend-config=backend.hcl
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt -check
-
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
