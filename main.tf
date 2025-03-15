@@ -178,3 +178,18 @@ resource "azurerm_mssql_server" "sqlsrv-calicot-dev-4" {
   administrator_login          = "4dm1n157r470r"
   administrator_login_password = "4-v3ry-53cr37-p455w0rd"
 }
+
+resource "azurerm_key_vault" "kv-calicot-dev-4" {
+  name                = "kv-calicot-dev-4"
+  location            = azurerm_resource_group.rg-calicot-web-dev-4.location
+  resource_group_name = azurerm_resource_group.rg-calicot-web-dev-4.name
+  sku_name            = "standard"
+  tenant_id           = "4dbda3f1-592e-4847-a01c-1671d0cc077f"
+
+  access_policy {
+    object_id = azurerm_app_service.app-calicot-dev-4.identity[0].principal_id
+
+    key_permissions = [ "Get" ]
+    secret_permissions = [ "Get" ]
+  }
+}
