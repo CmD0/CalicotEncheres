@@ -15,11 +15,11 @@ resource "azurerm_network_security_group" "netsg-dev-db-4" {
   resource_group_name = azurerm_resource_group.rg-calicot-web-dev-4.name
 
   security_rule {
-    name                       = "block everyone"
-    priority                   = 101
+    name                       = "block_everyone"
+    priority                   = 102
     direction                  = "Inbound"
     access                     = "Deny"
-    protocol                   = "Tcp"
+    protocol                   = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
     source_port_range          = "*"
@@ -28,14 +28,14 @@ resource "azurerm_network_security_group" "netsg-dev-db-4" {
 
   security_rule {
     name                         = "private-db-4"
-    priority                     = 102
+    priority                     = 101
     direction                    = "Inbound"
     access                       = "Allow"
     protocol                     = "Tcp"
     source_address_prefixes      = ["10.0.1.0/24"]
     destination_address_prefixes = ["10.0.2.0/24"]
-    source_port_range            = "8443-8443"
-    destination_port_range       = "8443-8443"
+    source_port_range            = "*"
+    destination_port_range       = "8443"
   }
 }
 
@@ -53,7 +53,7 @@ resource "azurerm_virtual_network" "vnet-dev-calicot-cc-4" {
   subnet {
     name             = "snet-dev-db-cc-4"
     address_prefixes = ["10.0.2.0/24"]
-    security_group   = "azurerm_network_security_group.netsg-dev-db-4"
+    security_group   = azurerm_network_security_group.netsg-dev-db-4.id
   }
 }
 
@@ -187,6 +187,7 @@ resource "azurerm_key_vault" "kv-calicot-dev-4" {
   tenant_id           = "4dbda3f1-592e-4847-a01c-1671d0cc077f"
 
   access_policy {
+    tenant_id = "4dbda3f1-592e-4847-a01c-1671d0cc077f"
     object_id = azurerm_app_service.app-calicot-dev-4.identity[0].principal_id
 
     key_permissions = [ "Get" ]
