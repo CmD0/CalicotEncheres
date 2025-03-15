@@ -95,7 +95,7 @@ resource "azurerm_monitor_autoscale_setting" "app-calicot-dev-scaling-4" {
   name                = "app-calicot-dev-scaling-4"
   location            = azurerm_resource_group.rg-calicot-web-dev-4.location
   resource_group_name = azurerm_resource_group.rg-calicot-web-dev-4.name
-  target_resource_id  = azurerm_app_service.app-calicot-dev-4.id
+  target_resource_id  = azurerm_app_service_plan.plan-calicot-dev-4.id
 
   profile {
     name = "defaultProfile"
@@ -107,19 +107,13 @@ resource "azurerm_monitor_autoscale_setting" "app-calicot-dev-scaling-4" {
     rule {
       metric_trigger {
         metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_app_service.app-calicot-dev-4.id
+        metric_resource_id = azurerm_app_service_plan.plan-calicot-dev-4.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
         time_aggregation   = "Average"
         operator           = "GreaterThan"
         threshold          = 70
-        metric_namespace   = "microsoft.compute/virtualmachinescalesets"
-        dimensions {
-          name     = "AppName"
-          operator = "Equals"
-          values   = ["App1"]
-        }
       }
 
       scale_action {
@@ -133,7 +127,7 @@ resource "azurerm_monitor_autoscale_setting" "app-calicot-dev-scaling-4" {
     rule {
       metric_trigger {
         metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_app_service.app-calicot-dev-4.id
+        metric_resource_id = azurerm_app_service_plan.plan-calicot-dev-4.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -149,10 +143,6 @@ resource "azurerm_monitor_autoscale_setting" "app-calicot-dev-scaling-4" {
         cooldown  = "PT1M"
       }
     }
-  }
-  predictive {
-    scale_mode      = "Enabled"
-    look_ahead_time = "PT5M"
   }
 }
 
